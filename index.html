@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>GBA Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="GBA Player">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Library: pick or import a game -->
+<div id="library" class="screen">
+  <div class="lib-scroll">
+    <div class="lib-inner">
+      <header class="lib-head">
+        <h1>GBA Player</h1>
+        <p class="lib-sub">Game Boy Advance games, right in Safari.</p>
+      </header>
+
+      <div class="lib-actions">
+        <div class="btn btn-primary file-btn">
+          Import game
+          <input id="file-input" type="file">
+        </div>
+        <button class="btn" id="link-btn" type="button">Open from a link</button>
+      </div>
+      <p class="lib-hint">Pick a .gba or .zip file. On iPad, choose iCloud Drive (or another storage app) in the menu that appears.</p>
+
+      <section class="shelf" id="shelf-device">
+        <h2>On this iPad</h2>
+        <div class="carts" id="carts-device"></div>
+        <p class="empty" id="empty-device">No games yet. Tap Import game to add one. It stays here, so next time it's one tap.</p>
+      </section>
+
+      <section class="shelf" id="shelf-site">
+        <h2>On this site</h2>
+        <div class="carts" id="carts-site"></div>
+      </section>
+
+      <footer class="lib-foot">
+        <button class="link" id="saves-btn" type="button">Back up or restore saves</button>
+        <button class="link" id="help-btn" type="button">Controls and tips</button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- Player -->
+<div id="player" class="screen hidden">
+  <div class="topbar" id="topbar">
+    <button class="pill" id="menu-btn" type="button">Menu</button>
+    <button class="pill" id="fast-btn" type="button">Fast</button>
+  </div>
+
+  <div class="bezel" id="bezel">
+    <canvas id="screen" width="240" height="160"></canvas>
+    <div class="fps hidden" id="fps"></div>
+  </div>
+
+  <div id="pad">
+    <div class="shoulder" id="btn-l" data-key="9">L</div>
+    <div class="shoulder right" id="btn-r" data-key="8">R</div>
+
+    <div class="dpad" id="dpad">
+      <div class="arm arm-v"></div>
+      <div class="arm arm-h"></div>
+      <div class="hub"></div>
+      <span class="chev up"></span><span class="chev down"></span>
+      <span class="chev left"></span><span class="chev right"></span>
+    </div>
+
+    <div class="face" id="btn-b" data-key="1">B</div>
+    <div class="face" id="btn-a" data-key="0">A</div>
+
+    <div class="small" id="btn-select" data-key="2"><i></i><span>Select</span></div>
+    <div class="small" id="btn-start" data-key="3"><i></i><span>Start</span></div>
+  </div>
+</div>
+
+<!-- Pause menu -->
+<div id="sheet" class="overlay hidden">
+  <div class="panel">
+    <h3 id="sheet-title">Paused</h3>
+    <div class="rows">
+      <button class="row strong" id="m-resume" type="button">Resume</button>
+      <button class="row" id="m-save" type="button">Save state <em id="m-save-note"></em></button>
+      <button class="row" id="m-load" type="button">Load state</button>
+      <button class="row" id="m-sound" type="button">Sound <b></b></button>
+      <button class="row" id="m-skip" type="button">Frame skip <b></b></button>
+      <button class="row" id="m-fps" type="button">Show speed <b></b></button>
+      <button class="row" id="m-smooth" type="button">Smooth screen <b></b></button>
+      <button class="row" id="m-reset" type="button">Restart game</button>
+      <button class="row" id="m-quit" type="button">Back to games</button>
+    </div>
+  </div>
+</div>
+
+<!-- Generic dialog (messages, saves backup, help) -->
+<div id="dialog" class="overlay hidden">
+  <div class="panel">
+    <h3 id="dlg-title"></h3>
+    <div id="dlg-body"></div>
+    <div class="dlg-buttons" id="dlg-buttons"></div>
+  </div>
+</div>
+
+<div id="busy" class="overlay hidden">
+  <div class="busy-box"><div class="spinner"></div><p id="busy-text">Loading game</p></div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<!-- Emulator core: GBA.js by Jeffrey Pfau (BSD 2-clause), see core/LICENSE-gbajs.txt -->
+<script src="core/util.js"></script>
+<script src="core/core.js"></script>
+<script src="core/arm.js"></script>
+<script src="core/thumb.js"></script>
+<script src="core/mmu.js"></script>
+<script src="core/io.js"></script>
+<script src="core/audio.js"></script>
+<script src="core/video.js"></script>
+<script src="core/video-software.js"></script>
+<script src="core/irq.js"></script>
+<script src="core/keypad.js"></script>
+<script src="core/sio.js"></script>
+<script src="core/savedata.js"></script>
+<script src="core/gpio.js"></script>
+<script src="core/gba.js"></script>
+<script src="js/bios.js"></script>
+<!-- Unzip: pako (MIT), see js/LICENSE-pako.txt -->
+<script src="js/pako_inflate.min.js"></script>
+<script src="js/zip.js"></script>
+<script src="js/savestate.js"></script>
+<script src="js/storage.js"></script>
+<script src="roms/games.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
